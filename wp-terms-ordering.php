@@ -167,7 +167,7 @@ class WP_Terms_Ordering {
 			return;
 		}
 
-		wp_register_script( 'wp-terms-ordering', self::$plugin_url . '/javascripts/terms-ordering.js', array( 'jquery-ui-sortable' ) );
+		wp_register_script( 'wp-terms-ordering', self::$plugin_url . '/javascript/terms-ordering.min.js', array( 'jquery-ui-sortable' ) );
 
 		wp_enqueue_script( 'wp-terms-ordering' );
 
