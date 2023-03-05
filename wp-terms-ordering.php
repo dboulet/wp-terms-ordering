@@ -1,12 +1,12 @@
 <?php
 /*
- * Plugin Name: Gecka Terms Ordering
- * Plugin URI: http://gecka-apps.com/wordpress-plugins/terms-ordering/
- * Description: Order your categories, tags or any other taxonomy of your Wordpress website
+ * Plugin Name: WP Terms Ordering
+ * Plugin URI: https://github.com/dboulet/wp-terms-ordering
+ * Description: Order your categories, tags or any other taxonomy of your Wordpress website.
  * Version: 1.0-beta2
- * Author: Gecka
- * Author URI: http://gecka.nc
- * Text Domain: gecka-terms-ordering
+ * Author: Dan Boulet
+ * Author URI: https://www.danboulet.com
+ * Text Domain: wp-terms-ordering
  * Domain Path: /languages
  * Licence: GPL
  */
@@ -28,12 +28,12 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-$gecka_term_ordering = Gecka_Terms_Ordering::instance();
+$wp_term_ordering = WP_Terms_Ordering::instance();
 
 /**
- * Class Gecka_Terms_Ordering
+ * Class WP_Terms_Ordering
  */
-class Gecka_Terms_Ordering {
+class WP_Terms_Ordering {
 	private static $instance;
 
 	private static $taxonomies = array( 'category' );
@@ -64,7 +64,7 @@ class Gecka_Terms_Ordering {
 
 	/**
 	 * Singleton pattern
-	 * @return Gecka_Terms_Ordering
+	 * @return WP_Terms_Ordering
 	 */
 	public static function instance() {
 		if ( ! isset( self::$instance ) ) {
@@ -103,7 +103,7 @@ class Gecka_Terms_Ordering {
 	public function activation_hook() {
 		if ( version_compare( PHP_VERSION, '5.0.0', '<' ) ) {
 			deactivate_plugins( basename( dirname( __FILE__ ) ) . '/' . basename( __FILE__ ) ); // Deactivate ourself
-			wp_die( __( "Sorry, the Gecka Terms Ordering plugin requires PHP 5 or higher.", 'gecka-terms-ordering' ) );
+			wp_die( __( "Sorry, the WP Terms Ordering plugin requires PHP 5 or higher.", 'wp-terms-ordering' ) );
 		}
 
 		global $wpdb;
@@ -135,7 +135,7 @@ class Gecka_Terms_Ordering {
 
 	public function plugins_loaded() {
 		self::$taxonomies = apply_filters( 'term-ordering-default-taxonomies', self::$taxonomies );
-		load_plugin_textdomain( 'gecka-terms-ordering', false, basename( dirname( __FILE__ ) ) . '/languages/' );
+		load_plugin_textdomain( 'wp-terms-ordering', false, basename( dirname( __FILE__ ) ) . '/languages/' );
 	}
 
 	public function after_setup_theme() {
@@ -167,13 +167,13 @@ class Gecka_Terms_Ordering {
 			return;
 		}
 
-		wp_register_script( 'gecka-terms-ordering', self::$plugin_url . '/javascripts/terms-ordering.js', array( 'jquery-ui-sortable' ) );
+		wp_register_script( 'wp-terms-ordering', self::$plugin_url . '/javascripts/terms-ordering.js', array( 'jquery-ui-sortable' ) );
 
-		wp_enqueue_script( 'gecka-terms-ordering' );
+		wp_enqueue_script( 'wp-terms-ordering' );
 
-		wp_localize_script( 'gecka-terms-ordering', 'terms_order', array( 'taxonomy' => $_GET['taxonomy'] ) );
+		wp_localize_script( 'wp-terms-ordering', 'terms_order', array( 'taxonomy' => $_GET['taxonomy'] ) );
 
-		wp_print_scripts( 'gecka-terms-ordering' );
+		wp_print_scripts( 'wp-terms-ordering' );
 	}
 
 	public static function has_support( $taxonomy ) {
@@ -405,18 +405,18 @@ class Gecka_Terms_Ordering {
 
 if ( ! function_exists( 'add_term_ordering_support' ) ) {
 	function add_term_ordering_support( $taxonomy ) {
-		Gecka_Terms_Ordering::add_taxonomy_support( $taxonomy );
+		WP_Terms_Ordering::add_taxonomy_support( $taxonomy );
 	}
 }
 
 if ( ! function_exists( 'remove_term_ordering_support' ) ) {
 	function remove_term_ordering_support( $taxonomy ) {
-		Gecka_Terms_Ordering::remove_taxonomy_support( $taxonomy );
+		WP_Terms_Ordering::remove_taxonomy_support( $taxonomy );
 	}
 }
 
 if ( ! function_exists( 'has_term_ordering_support' ) ) {
 	function has_term_ordering_support( $taxonomy ) {
-		return Gecka_Terms_Ordering::has_support( $taxonomy );
+		return WP_Terms_Ordering::has_support( $taxonomy );
 	}
 }
