@@ -45,21 +45,14 @@ class WP_Terms_Ordering {
 		self::$plugin_url  = plugins_url( '', __FILE__ );
 		self::$plugin_path = dirname( __FILE__ );
 
-		register_activation_hook( __FILE__, array( $this, 'activation_hook' ) );
-
 		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ), 5 );
 		add_action( 'after_setup_theme', array( $this, 'after_setup_theme' ), 5 );
-
-		add_action( 'init', array( $this, 'metadata_wpdbfix' ) );
-		add_action( 'switch_blog', array( $this, 'metadata_wpdbfix' ) );
 
 		add_action( 'admin_init', array( $this, 'admin_init' ) );
 
 		add_filter( 'terms_clauses', array( $this, 'terms_clauses' ), 10, 3 );
 
 		add_action( 'created_term', array( $this, 'created_term' ), 10, 3 );
-
-		add_action( 'delete_term', array( $this, 'delete_term' ), 10, 3 );
 	}
 
 	/**
@@ -97,42 +90,6 @@ class WP_Terms_Ordering {
 		}
 	}
 
-	/**
-	 * Hooks and filters
-	 */
-	public function activation_hook() {
-		if ( version_compare( PHP_VERSION, '5.0.0', '<' ) ) {
-			deactivate_plugins( basename( dirname( __FILE__ ) ) . '/' . basename( __FILE__ ) ); // Deactivate ourself
-			wp_die( __( "Sorry, the WP Terms Ordering plugin requires PHP 5 or higher.", 'wp-terms-ordering' ) );
-		}
-
-		global $wpdb;
-
-		/**
-		 * Create the termmeta database table, for WordPress < version 4.4.
-		 *
-		 * The max index length is required since 4.2, because of the move to utf8mb4 collation.
-		 *
-		 * @see wp_get_db_schema()
-		 */
-		$charset_collate  = $wpdb->get_charset_collate();
-		$table_name       = $wpdb->prefix . "termmeta";
-		$max_index_length = 191;
-
-		$sql = "CREATE TABLE IF NOT EXISTS $table_name (
-			meta_id bigint(20) unsigned NOT NULL auto_increment,
-			term_id bigint(20) unsigned NOT NULL default '0',
-			meta_key varchar(255) default NULL,
-			meta_value longtext,
-			PRIMARY KEY  (meta_id),
-			KEY term_id (term_id),
-			KEY meta_key (meta_key($max_index_length))
-		) $charset_collate;";
-
-		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-		dbDelta( $sql );
-	}
-
 	public function plugins_loaded() {
 		self::$taxonomies = apply_filters( 'term-ordering-default-taxonomies', self::$taxonomies );
 		load_plugin_textdomain( 'wp-terms-ordering', false, basename( dirname( __FILE__ ) ) . '/languages/' );
@@ -150,13 +107,6 @@ class WP_Terms_Ordering {
 
 		// Httpr hadler for drag and drop ordering
 		add_action( 'wp_ajax_terms-ordering', array( $this, 'terms_ordering_httpr' ) );
-	}
-
-	public function metadata_wpdbfix() {
-		global $wpdb;
-		if ( ! isset( $wpdb->termmeta ) ) {
-			$wpdb->termmeta = "{$wpdb->prefix}termmeta";
-		}
 	}
 
 	/**
@@ -383,23 +333,6 @@ class WP_Terms_Ordering {
 
 		// reorder
 		$this->place_term( $term, $taxonomy, $next_id );
-	}
-
-	/**
-	 * Delete terms metas on deletion
-	 *
-	 * @param int $term_id
-	 */
-	public function delete_term( $term_id, $tt_id, $taxonomy ) {
-		if ( ! $this->has_support( $taxonomy ) ) {
-			return;
-		}
-
-		if ( ! (int) $term_id ) {
-			return;
-		}
-
-		delete_metadata( 'term', $term_id, 'order' );
 	}
 }
 
