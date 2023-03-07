@@ -115,7 +115,7 @@ class WP_Terms_Ordering {
 
 		wp_enqueue_script( 'wp-terms-ordering' );
 
-		wp_localize_script( 'wp-terms-ordering', 'terms_order', array( 'taxonomy' => $_GET['taxonomy'] ) );
+		wp_localize_script( 'wp-terms-ordering', 'wpTermsOrdering', array( 'taxonomy' => $_GET['taxonomy'] ) );
 
 		wp_print_scripts( 'wp-terms-ordering' );
 	}
