@@ -28,7 +28,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-$wp_term_ordering = WP_Terms_Ordering::instance();
+$wp_term_ordering = WP_Terms_Ordering::get_instance();
 
 /**
  * Class WP_Terms_Ordering
@@ -53,7 +53,7 @@ class WP_Terms_Ordering {
 	 * Singleton pattern
 	 * @return WP_Terms_Ordering
 	 */
-	public static function instance() {
+	public static function get_instance() {
 		if ( ! isset( self::$instance ) ) {
 			$class_name     = __CLASS__;
 			self::$instance = new $class_name;
