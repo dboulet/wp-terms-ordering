@@ -134,10 +134,10 @@ class WP_Terms_Ordering {
 		}
 
 		?>
-		<style type="text/css">
+		<style>
 			.widefat .product-cat-placeholder {
-				outline: 1px dotted #21759B;
 				height: 60px;
+				outline: 1px dotted #21759B;
 			}
 		</style>
 		<?php
