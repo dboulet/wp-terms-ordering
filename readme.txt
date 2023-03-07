@@ -1,7 +1,7 @@
 === WP Terms Ordering ===
 Contributors: Dan Boulet, Gecka Apps, Gecka
 Tags: term, terms, category, categories, terms ordering, categories sorting, sort categories, categories order, categories ordering, category order, taxonomy order, taxonomies order
-Requires at least: 4.4
+Requires at least: 4.5
 Requires PHP: 5.6
 Tested up to: 6.1
 Stable tag: 1.0-beta2
