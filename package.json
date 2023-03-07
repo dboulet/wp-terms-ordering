@@ -1,0 +1,17 @@
+{
+  "name": "wp-terms-ordering",
+  "version": "1.0.0",
+  "description": "Order your categories, tags or any other taxonomy of your Wordpress website.",
+  "repository": "git@github.com:dboulet/wp-terms-ordering.git",
+  "author": "Dan Boulet <dan@danboulet.com>",
+  "license": "GPL-2.0-or-later",
+  "devDependencies": {
+    "@wordpress/eslint-plugin": "^14.1.0",
+    "eslint": "^8.35.0",
+    "uglify-js": "^3.17.4"
+  },
+  "scripts": {
+    "lint:js": "eslint --ignore-pattern *.min.js javascript",
+    "minify:js": "uglifyjs javascript/terms-ordering.js --compress --mangle --output javascript/terms-ordering.min.js"
+  }
+}

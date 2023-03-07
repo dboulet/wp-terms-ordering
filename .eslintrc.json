@@ -1,0 +1,13 @@
+{
+    "env": {
+        "browser": true,
+        "jquery": true
+    },
+    "extends": [
+    	"eslint:recommended",
+    	"plugin:@wordpress/eslint-plugin/custom",
+    	"plugin:@wordpress/eslint-plugin/es5",
+    	"plugin:@wordpress/eslint-plugin/i18n",
+    	"plugin:@wordpress/eslint-plugin/jsdoc"
+    ]
+}

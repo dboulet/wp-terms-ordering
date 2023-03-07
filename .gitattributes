@@ -14,7 +14,7 @@
 # Configs
 .editorconfig     text
 .gitattributes    text
-*.lock            text -diff
+*.lock            text
 package.json      text eol=lf
 package-lock.json text eol=lf -diff
 
@@ -28,5 +28,8 @@ package-lock.json text eol=lf -diff
 
 # Exclude files from archive files.
 .editorconfig     export-ignore
+.eslintrc.json    export-ignore
 .gitattributes    export-ignore
 .gitignore        export-ignore
+package.json      export-ignore
+yarn.lock         export-ignore
