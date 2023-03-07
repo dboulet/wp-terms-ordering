@@ -1,0 +1,32 @@
+# Auto detect text files and perform LF normalization.
+*                 text=auto
+
+# Source code
+*.css             text diff=css
+*.html            text diff=html
+*.js              text
+*.php             text diff=php
+
+# Documentation
+*.md              text diff=markdown
+*.txt             text
+
+# Configs
+.editorconfig     text
+.gitattributes    text
+*.lock            text -diff
+package.json      text eol=lf
+package-lock.json text eol=lf -diff
+
+# Graphics
+*.png             binary
+*.jpg             binary
+*.webp            binary
+
+# Ignore files (like .npmignore or .gitignore)
+*.*ignore         text
+
+# Exclude files from archive files.
+.editorconfig     export-ignore
+.gitattributes    export-ignore
+.gitignore        export-ignore
