@@ -38,13 +38,7 @@ class WP_Terms_Ordering {
 
 	private static $taxonomies = array( 'category' );
 
-	private static $plugin_url;
-	private static $plugin_path;
-
 	private function __construct() {
-		self::$plugin_url  = plugins_url( '', __FILE__ );
-		self::$plugin_path = dirname( __FILE__ );
-
 		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ), 5 );
 		add_action( 'after_setup_theme', array( $this, 'after_setup_theme' ), 5 );
 
@@ -92,7 +86,7 @@ class WP_Terms_Ordering {
 
 	public function plugins_loaded() {
 		self::$taxonomies = apply_filters( 'term-ordering-default-taxonomies', self::$taxonomies );
-		load_plugin_textdomain( 'wp-terms-ordering', false, basename( dirname( __FILE__ ) ) . '/languages/' );
+		load_plugin_textdomain( 'wp-terms-ordering', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 	}
 
 	public function after_setup_theme() {
@@ -117,7 +111,7 @@ class WP_Terms_Ordering {
 			return;
 		}
 
-		wp_register_script( 'wp-terms-ordering', self::$plugin_url . '/javascript/terms-ordering.min.js', array( 'jquery-ui-sortable' ) );
+		wp_register_script( 'wp-terms-ordering', plugins_url( 'javascript/terms-ordering.min.js', __FILE__ ), array( 'jquery-ui-sortable' ) );
 
 		wp_enqueue_script( 'wp-terms-ordering' );
 
