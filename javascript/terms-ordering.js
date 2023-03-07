@@ -64,7 +64,7 @@ jQuery( document ).ready( function( $ ) {
 			ui.item.find( '.check-column input' ).hide().after( '<img alt="processing" src="images/wpspin_light.gif" class="waiting" style="margin-left: 6px;" />' );
 
 			// go do the sorting stuff via ajax
-			$.post( ajaxurl, { action: 'terms-ordering', id: termid, nextid: nexttermid, taxonomy: wpTermsOrdering.taxonomy }, function( response ) {
+			$.post( ajaxurl, { action: 'terms-ordering', id: termid, nextid: nexttermid, taxonomy: wpTermsOrdering.taxonomy, nonce: wpTermsOrdering.nonce }, function( response ) {
 				if ( response === 'children' ) {
 					window.location.reload();
 				} else {

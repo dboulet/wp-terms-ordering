@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WP Terms Ordering\n"
-"POT-Creation-Date: 2023-03-06 12:25-0600\n"
+"POT-Creation-Date: 2023-03-06 12:26-0600\n"
 "PO-Revision-Date: 2023-03-04 23:40-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -30,7 +30,7 @@ msgstr ""
 
 #. Description of the plugin/theme
 msgid ""
-"Order your categories, tags or any other taxonomy of your Wordpress website."
+"Order your categories, tags or any other taxonomy of your WordPress website."
 msgstr ""
 
 #. Author of the plugin/theme
