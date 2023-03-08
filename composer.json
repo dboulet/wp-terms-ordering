@@ -1,0 +1,12 @@
+{
+    "name": "danboulet/wp-terms-ordering",
+    "description": "Order your categories, tags or any other taxonomy of your WordPress website.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Dan Boulet",
+            "email": "dan@danboulet.com"
+        }
+    ]
+}
