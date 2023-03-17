@@ -14,57 +14,72 @@ jQuery( document ).ready( function( $ ) {
 			ui.children().each( function() {
 				jQuery( this ).width( jQuery( this ).width() );
 			} );
+
 			return ui;
 		},
 		start: function( event, ui ) {
 			if ( ! ui.item.hasClass( 'alternate' ) ) {
-				ui.item.css( 'background-color', '#ffffff' );
+				ui.item.css( 'background-color', '#fff' );
 			}
-			ui.item.children( 'td,th' ).css( 'border-bottom-width', '0' );
+
+			ui.item.children( 'td, th' ).css( 'border-bottom-width', '0' );
 			ui.item.css( 'outline', '1px solid #aaa' );
 		},
 		stop: function( event, ui ) {
 			ui.item.removeAttr( 'style' );
-			ui.item.children( 'td,th' ).css( 'border-bottom-width', '1px' );
+			ui.item.children( 'td, th' ).css( 'border-bottom-width', '1px' );
 		},
 		update: function( event, ui ) {
-			var termid = ui.item.find( '.check-column input' ).val();	// this post id
-			var termparent = ui.item.find( '.parent' ).html(); // post parent
-			var prevtermid = ui.item.prev().find( '.check-column input' ).val();
-			var nexttermid = ui.item.next().find( '.check-column input' ).val();
-			var prevtermparent;
-			var nexttermparent;
+			var termId = ui.item.find( '.check-column input' ).val();	// This post id.
+			var termParent = ui.item.find( '.parent' ).html(); // Post parent.
+			var prevTermId = ui.item.prev().find( '.check-column input' ).val();
+			var nextTermId = ui.item.next().find( '.check-column input' ).val();
+			var prevTermParent;
+			var nextTermParent;
 
-			if ( termid === undefined ) {
-				termid = 1;
+			if ( termId === undefined ) {
+				termId = 1;
 			}
 
-			if ( prevtermid !== undefined ) {
-				prevtermparent = ui.item.prev().find( '.parent' ).html();
+			if ( prevTermId !== undefined ) {
+				prevTermParent = ui.item.prev().find( '.parent' ).html();
 
-				if ( prevtermparent !== termparent ) {
-					prevtermid = undefined;
+				if ( prevTermParent !== termParent ) {
+					prevTermId = undefined;
 				}
 			}
 
-			if ( nexttermid !== undefined ) {
-				nexttermparent = ui.item.next().find( '.parent' ).html();
-				if ( nexttermparent !== termparent ) {
-					nexttermid = undefined;
+			if ( nextTermId !== undefined ) {
+				nextTermParent = ui.item.next().find( '.parent' ).html();
+
+				if ( nextTermParent !== termParent ) {
+					nextTermId = undefined;
 				}
 			}
 
-			// if previous and next not at same tree level, or next not at same tree level and the previous is the parent of the next, or just moved item beneath its own children
-			if ( ( prevtermid === undefined && nexttermid === undefined ) || ( nexttermid === undefined && nexttermparent === prevtermid ) || ( nexttermid !== undefined && prevtermparent === termid ) ) {
+			// If previous and next not at same tree level, or next not at same tree
+			// level and the previous is the parent of the next, or just moved item
+			// beneath its own children.
+			if (
+				( prevTermId === undefined && nextTermId === undefined ) ||
+				( nextTermId === undefined && nextTermParent === prevTermId ) ||
+				( nextTermId !== undefined && prevTermParent === termId )
+			) {
 				$( 'table.widefat tbody' ).sortable( 'cancel' );
 				return;
 			}
 
-			// show spinner
-			ui.item.find( '.check-column input' ).hide().after( '<img alt="processing" src="images/wpspin_light.gif" class="waiting" style="margin-left: 6px;" />' );
+			// Show spinner.
+			ui.item.find( '.check-column input' ).hide().after( '<img alt="processing" src="images/wpspin_light.gif" class="waiting" style="margin-left: 6px;">' );
 
-			// go do the sorting stuff via ajax
-			$.post( ajaxurl, { action: 'terms-ordering', id: termid, nextid: nexttermid, taxonomy: wpTermsOrdering.taxonomy, nonce: wpTermsOrdering.nonce }, function( response ) {
+			// Go do the sorting stuff via ajax.
+			$.post( ajaxurl, {
+				action: 'terms-ordering',
+				id: termId,
+				nextid: nextTermId,
+				taxonomy: wpTermsOrdering.taxonomy,
+				nonce: wpTermsOrdering.nonce,
+			}, function( response ) {
 				if ( response === 'children' ) {
 					window.location.reload();
 				} else {
@@ -72,13 +87,12 @@ jQuery( document ).ready( function( $ ) {
 				}
 			} );
 
-			// fix cell colors
-			$( 'table.widefat tbody tr' ).each( function() {
-				var i = jQuery( 'table.widefat tbody tr' ).index( this );
-				if ( i % 2 === 0 ) {
-					jQuery( this ).addClass( 'alternate' );
+			// Fix cell colors.
+			$( 'table.widefat tbody tr' ).each( function( index ) {
+				if ( index % 2 === 0 ) {
+					$( this ).addClass( 'alternate' );
 				} else {
-					jQuery( this ).removeClass( 'alternate' );
+					$( this ).removeClass( 'alternate' );
 				}
 			} );
 		},
