@@ -18,16 +18,10 @@ jQuery( document ).ready( function( $ ) {
 			return ui;
 		},
 		start: function( event, ui ) {
-			if ( ! ui.item.hasClass( 'alternate' ) ) {
-				ui.item.css( 'background-color', '#fff' );
-			}
-
-			ui.item.children( 'td, th' ).css( 'border-bottom-width', '0' );
-			ui.item.css( 'outline', '1px solid #aaa' );
+			ui.item.css( { backgroundColor: '#fff', outline: '1px solid #aaa' } );
 		},
 		stop: function( event, ui ) {
 			ui.item.removeAttr( 'style' );
-			ui.item.children( 'td, th' ).css( 'border-bottom-width', '1px' );
 		},
 		update: function( event, ui ) {
 			var termId = ui.item.find( '.check-column input' ).val();	// This post id.
@@ -87,14 +81,6 @@ jQuery( document ).ready( function( $ ) {
 				}
 			} );
 
-			// Fix cell colors.
-			$( 'table.widefat tbody tr' ).each( function( index ) {
-				if ( index % 2 === 0 ) {
-					$( this ).addClass( 'alternate' );
-				} else {
-					$( this ).removeClass( 'alternate' );
-				}
-			} );
 		},
 	} );
 } );
