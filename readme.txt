@@ -4,7 +4,7 @@ Tags: term, terms, category, categories, terms ordering, categories sorting, sor
 Requires at least: 4.5
 Requires PHP: 5.6
 Tested up to: 6.1
-Stable tag: 1.0-beta2
+Stable tag: 1.0.0
 Order your categories, tags or any other taxonomy's terms of your Wordpress website.
 
 == Description ==
@@ -28,9 +28,5 @@ By default, drag and drop sorting is enabled for your posts categories.
 
 == Changelog ==
 
-= 1.0-beta2 =
-* Localization support.
-* Support up to 4.4
-
-= 1.0-beta1 =
-* First release.
+= 1.0.0 =
+* Initial release.
