@@ -29,6 +29,40 @@ jQuery( document ).ready( function( $ ) {
 		return null;
 	}
 
+	/**
+	 * Get term ID
+	 *
+	 * Given an item which represents a term in a sortable table,
+	 * return its term ID.
+	 *
+	 * @param {jQuery} item The item being sorted.
+	 * @return {number|void} The ID.
+	 */
+	function getTermId( item ) {
+		if ( item.length ) {
+			return (
+				item.filter( '[id^=tag-]' ).attr( 'id' ).replace( /^tag-/, '' ) ||
+				item.find( '.check-column input' ).val() ||
+				1
+			);
+		}
+	}
+
+	/**
+	 * Get term parent’s ID
+	 *
+	 * Given an item which represents a term in a sortable table,
+	 * return its parent’s term ID.
+	 *
+	 * @param {jQuery} item The item being sorted.
+	 * @return {number|void} The parent’s ID.
+	 */
+	function getParentTermId( item ) {
+		if ( item.length ) {
+			return item.find( '.parent' ).html() || 0;
+		}
+	}
+
 	$( 'table.widefat.wp-list-table tbody' ).find( 'th, td' ).css( 'cursor', 'move' ).end().sortable( {
 		items: 'tr:not(.inline-edit-row)',
 		cursor: 'move',
@@ -50,29 +84,26 @@ jQuery( document ).ready( function( $ ) {
 			ui.item.css( { backgroundColor: '#fff', outline: '1px solid #aaa' } );
 		},
 		update: function( event, ui ) {
-			var termId = ui.item.find( '.check-column input' ).val();	// The term’s ID.
-			var termParent = ui.item.find( '.parent' ).html(); // The term’s parent ID.
-			var prevTermId = ui.item.prev().find( '.check-column input' ).val();
-			var nextTermId = ui.item.next().find( '.check-column input' ).val();
-			var prevTermParent;
-			var nextTermParent;
-
-			if ( termId === undefined ) {
-				termId = 1;
-			}
+			var item = ui.item;
+			var termId = getTermId( item );
+			var termParentId = getParentTermId( item );
+			var prevTermId = getTermId( item.prev() );
+			var nextTermId = getTermId( item.next() );
+			var prevTermParentId;
+			var nextTermParentId;
 
 			if ( prevTermId !== undefined ) {
-				prevTermParent = ui.item.prev().find( '.parent' ).html();
+				prevTermParentId = getParentTermId( item.prev() );
 
-				if ( prevTermParent !== termParent ) {
+				if ( prevTermParentId !== termParentId ) {
 					prevTermId = undefined;
 				}
 			}
 
 			if ( nextTermId !== undefined ) {
-				nextTermParent = ui.item.next().find( '.parent' ).html();
+				nextTermParentId = getParentTermId( item.next() );
 
-				if ( nextTermParent !== termParent ) {
+				if ( nextTermParentId !== termParentId ) {
 					nextTermId = undefined;
 				}
 			}
@@ -82,15 +113,15 @@ jQuery( document ).ready( function( $ ) {
 			// beneath its own children.
 			if (
 				( prevTermId === undefined && nextTermId === undefined ) ||
-				( nextTermId === undefined && nextTermParent === prevTermId ) ||
-				( nextTermId !== undefined && prevTermParent === termId )
+				( nextTermId === undefined && nextTermParentId === prevTermId ) ||
+				( nextTermId !== undefined && prevTermParentId === termId )
 			) {
 				$( this ).sortable( 'cancel' );
 				return;
 			}
 
 			// Show spinner.
-			ui.item.find( '.check-column input' ).hide().after( '<img alt="processing" src="images/wpspin_light-2x.gif" class="waiting" style="margin-left: 6px; width: 16px;">' );
+			item.find( '.check-column input' ).hide().after( '<img alt="processing" src="images/wpspin_light-2x.gif" class="waiting" style="margin-left: 6px; width: 16px;">' );
 
 			// Go do the sorting stuff via ajax.
 			$.post( ajaxurl, {
@@ -103,13 +134,13 @@ jQuery( document ).ready( function( $ ) {
 				if ( response === 'children' ) {
 					window.location.reload();
 				} else {
-					ui.item.find( '.check-column input' ).show().siblings( 'img' ).remove();
+					item.find( '.check-column input' ).show().siblings( 'img' ).remove();
 				}
 			} );
 
 			// Fix order of children.
 			if ( termDescendants ) {
-				ui.item.after( termDescendants );
+				item.after( termDescendants );
 			}
 		},
 		stop: function( event, ui ) {
