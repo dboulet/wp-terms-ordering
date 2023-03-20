@@ -1,6 +1,33 @@
 /* Modifided script from the simple-page-ordering plugin */
 /* global ajaxurl wpTermsOrdering */
 jQuery( document ).ready( function( $ ) {
+	var termDescendants;
+
+	/**
+	 * Find term descendants
+	 *
+	 * Given an item which represents a term in a sortable table, find all of the
+	 * items which represent its descendant terms.
+	 *
+	 * @param {jQuery} item The item being sorted.
+	 * @return {jQuery|null} The item’s descendants, or null if there are none.
+	 */
+	function findDescendants( item ) {
+		var matches = item.attr( 'class' ).match( /\blevel-(\d+)\b/ ) || [];
+		var i;
+		var s = [];
+
+		if ( matches.length > 1 ) {
+			// Build an array of selector strings which will match items which are
+			// NOT descendants.
+			for ( i = Number( matches[1] ); i >= 0; i-- ) {
+				s.push( '.level-' + i.toString() );
+			}
+			return item.nextUntil( s.join() );
+		}
+
+		return null;
+	}
 
 	$( 'table.widefat.wp-list-table tbody' ).find( 'th, td' ).css( 'cursor', 'move' ).end().sortable( {
 		items: 'tr:not(.inline-edit-row)',
@@ -9,12 +36,15 @@ jQuery( document ).ready( function( $ ) {
 		containment: 'table.widefat',
 		placeholder: 'product-cat-placeholder',
 		scrollSensitivity: 40,
-		helper: function( event, ui ) {
-			ui.children().each( function() {
+		helper: function( event, element ) {
+			// Take this opportunity to find the term’s descendants, to use later.
+			termDescendants = findDescendants( element );
+
+			element.children().each( function() {
 				$( this ).width( $( this ).width() );
 			} );
 
-			return ui;
+			return element;
 		},
 		start: function( event, ui ) {
 			ui.item.css( { backgroundColor: '#fff', outline: '1px solid #aaa' } );
@@ -77,6 +107,10 @@ jQuery( document ).ready( function( $ ) {
 				}
 			} );
 
+			// Fix order of children.
+			if ( termDescendants ) {
+				ui.item.after( termDescendants );
+			}
 		},
 		stop: function( event, ui ) {
 			// Remove styles which were added in the 'start' event.
