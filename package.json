@@ -2,16 +2,19 @@
   "name": "wp-terms-ordering",
   "version": "1.0.0",
   "description": "Order your categories, tags or any other taxonomy of your Wordpress website.",
+  "type": "module",
   "repository": "git@github.com:dboulet/wp-terms-ordering.git",
   "author": "Dan Boulet <dan@danboulet.com>",
   "license": "GPL-2.0-or-later",
   "devDependencies": {
+    "@eslint/eslintrc": "^2.1.3",
+    "@eslint/js": "^8.53.0",
     "@wordpress/eslint-plugin": "^17.2.0",
     "eslint": "^8.53.0",
     "uglify-js": "^3.17.4"
   },
   "scripts": {
-    "lint:js": "eslint --ignore-pattern *.min.js javascript",
+    "lint:js": "eslint javascript",
     "lint:php": "find . -path ./node_modules -prune -o -name \"*.php\" -print0 | xargs -0 -n1 -P8 php -l",
     "minify:js": "uglifyjs javascript/terms-ordering.js --compress --mangle --output javascript/terms-ordering.min.js"
   }
