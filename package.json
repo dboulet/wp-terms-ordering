@@ -6,8 +6,8 @@
   "author": "Dan Boulet <dan@danboulet.com>",
   "license": "GPL-2.0-or-later",
   "devDependencies": {
-    "@wordpress/eslint-plugin": "^14.1.0",
-    "eslint": "^8.35.0",
+    "@wordpress/eslint-plugin": "^17.2.0",
+    "eslint": "^8.53.0",
     "uglify-js": "^3.17.4"
   },
   "scripts": {
