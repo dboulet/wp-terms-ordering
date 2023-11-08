@@ -28,8 +28,8 @@ package-lock.json text eol=lf -diff
 *.*ignore         text
 
 # Exclude files from archive files.
+*.config.js       export-ignore
 .editorconfig     export-ignore
-.eslintrc.json    export-ignore
 .gitattributes    export-ignore
 .gitignore        export-ignore
 composer.json     export-ignore
